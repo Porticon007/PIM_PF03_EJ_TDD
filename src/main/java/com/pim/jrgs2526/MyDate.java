@@ -34,4 +34,82 @@ public class MyDate {
             return null;
         }
     }
+
+    private int day;
+    private Months month;
+    private int year;
+
+    public MyDate() {
+
+    }
+    public MyDate(int day, Months month, int year) {
+        if (!isValidDate(day, month, year))
+            throw new IllegalArgumentException(ERR_INVALID_DATE);
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public Months getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setDay(int day) {
+        if (!isValidDate(day, month, year))
+            throw new IllegalArgumentException(ERR_INVALID_DAY);
+        this.day = day;
+    }
+
+    public void setMonth(Months month) {
+        if (!isValidDate(day, month, year))
+            throw new IllegalArgumentException(ERR_INVALID_MONTH);
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        if (year < 0)
+            throw new IllegalArgumentException(ERR_INVALID_YEAR);
+        if (!isValidDate(day, month, year))
+            throw new IllegalArgumentException(ERR_INVALID_YEAR);
+        this.year = year;
+    }
+
+    private boolean isValidDate(int day, Months month, int year) {
+        if (month == null || year < 0)
+            return false;
+        int maxDay = getDaysInMonth(month, year);
+        return day >= 1 && day <= maxDay;
+    }
+
+    private int getDaysInMonth(Months month, int year) {
+        switch (month) {
+            case APRIL:
+            case JUNE:
+            case SEPTEMBER:
+            case NOVEMBER:
+                return 30;
+            case FEBRUARY:
+                if (isLeapYear(year))
+                    return 29;
+                return 28;
+            default:
+                return 31;
+        }
+    }
+
+    private boolean isLeapYear(int year) {
+        if (year % 400 == 0)
+            return true;
+        if (year % 100 == 0)
+            return false;
+        return year % 4 == 0;
+    }
 }
